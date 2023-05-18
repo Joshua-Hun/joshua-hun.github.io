@@ -1,21 +1,167 @@
+<!DOCTYPE html>
 <html>
+  <head>
+    <title>Snake Game</title>
+    <style>
+      #game-board {
+        border: 1px solid #000;
+      }
+      .cell {
+        width: 20px;
+        height: 20px;
+        background-color: #ccc;
+        border: 1px solid #fff;
+      }
+      .snake {
+        background-color: #333;
+      }
+      .food {
+        background-color: #f00;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Snake Game</h1>
+    <canvas id="game-board" width="400" height="400"></canvas>
+    <script>
+      // Get the canvas and its context
+      const canvas = document.getElementById("game-board");
+      const context = canvas.getContext("2d");
 
-    <head>
-        <link rel="stylesheet" href="helloStyles.css"
-    </head>
-   
-    <body>
-        <a href="index.html">home</a>
-        <a href="page1.html">page 1</a>
-        <a href="page2.html">page 2 </a>
-        <a href="page3.html">page 3 </a>
-        <a href="page4.html">page 4 </a>
-        <a href="page5.html">page 5 </a>
-     <h1>sisters</h1>   
-     <ol>
-        <li>katie</li>
-        <li>heather</li>
-        <li>alexis</li>
-    </ol>
-    <body>
-    </hdml>
+      // Define the game variables
+      const gridSize = 20;
+      const snake = [{ x: 4, y: 4 }];
+      let food = { x: 10, y: 10 };
+      let dx = 1;
+      let dy = 0;
+      let score = 0;
+
+      // Handle keyboard events
+      document.addEventListener("keydown", changeDirection);
+
+      function changeDirection(event) {
+        const keyPressed = event.keyCode;
+        const goingUp = dy === -1;
+        const goingDown = dy === 1;
+        const goingRight = dx === 1;
+        const goingLeft = dx === -1;
+
+        if (keyPressed === 37 && !goingRight) {
+          dx = -1;
+          dy = 0;
+        }
+
+        if (keyPressed === 38 && !goingDown) {
+          dx = 0;
+          dy = -1;
+        }
+
+        if (keyPressed === 39 && !goingLeft) {
+          dx = 1;
+          dy = 0;
+        }
+
+        if (keyPressed === 40 && !goingUp) {
+          dx = 0;
+          dy = 1;
+        }
+      }
+
+      // Generate random food location
+      function generateFood() {
+        food = {
+          x: Math.floor(Math.random() * (canvas.width / gridSize)),
+          y: Math.floor(Math.random() * (canvas.height / gridSize)),
+        };
+      }
+
+      // Check if snake collided with the food
+      function checkFoodCollision() {
+        if (snake[0].x === food.x && snake[0].y === food.y) {
+          // Increase score
+          score++;
+
+          // Generate new food
+          generateFood();
+
+          // Add new segment to the snake
+          const tail = { x: snake[0].x, y: snake[0].y };
+          snake.unshift(tail);
+        }
+      }
+
+      // Check if snake collided with itself or the wall
+      function checkCollision() {
+        const hitLeftWall = snake[0].x < 0;
+        const hitRightWall = snake[0].x >= canvas.width / gridSize;
+        const hitTopWall = snake[0].y < 0;
+        const hitBottomWall = snake[0].y >= canvas.height / gridSize;
+
+        if (
+          hitLeftWall ||
+          hitRightWall ||
+          hitTopWall ||
+          hitBottomWall ||
+          checkSelfCollision()
+        ) {
+          // Game over
+          clearInterval(gameLoop);
+        }
+      }
+
+      // Check if snake collided with itself
+      function checkSelfCollision() {
+        const [head, ...tail] = snake;
+        return tail.some((segment) => segment.x === head.x && segment.y === head.y);
+      }
+
+      // Update the game state
+      function update() {
+        // Move the snake
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+        snake.unshift(head);
+        snake.pop();
+
+        // Check for collisions
+        checkCollision();
+        checkFoodCollision();
+      }
+
+      // Draw the game board
+      function draw() {
+        // Clear the canvas
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the snake
+        snake.forEach((segment) => {
+          context.fillStyle = "green";
+          context.fillRect(
+            segment.x * gridSize,
+            segment.y * gridSize,
+            gridSize,
+            gridSize
+          );
+        });
+
+        // Draw the food
+        context.fillStyle = "red";
+        context.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+
+        // Draw the score
+        context.fillStyle = "black";
+        context.font = "20px Arial";
+        context.fillText("Score: " + score, 10, 30);
+      }
+
+      // Game loop
+      function gameLoop() {
+        update();
+        draw();
+      }
+
+      // Start the game
+      generateFood();
+      const gameLoop = setInterval(gameLoop, 100);
+    </script>
+  </body>
+</html>
