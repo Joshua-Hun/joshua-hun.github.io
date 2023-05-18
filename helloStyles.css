@@ -1,0 +1,58 @@
+
+body {
+    background-color: rgb(102, 243, 173);
+    font-family: Arial, sans-serif;
+}
+
+a {
+    display: inline-block;
+    padding: 10px;
+    margin-right: 10px;
+    color: #333;
+    text-decoration: none;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a:hover {
+    color: rgb(252, 255, 75);
+    background-color: #333;
+}
+
+ol,
+ul {
+    color: blueviolet;
+    font-size: 24px;
+    text-align: left;
+}
+
+ol li,
+ul li {
+    margin-bottom: 10px;
+}
+
+h1 {
+    color: #333;
+}
+
+.highlight {
+    color: red;
+}
+
+/* Additional Styles */
+
+a:hover {
+    background-color: rgb(252, 255, 75);
+}
+
+a:active {
+    background-color: rgb(65, 0, 0);
+    color: white;
+}
+
+
+
+  
+
