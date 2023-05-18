@@ -1,0 +1,44 @@
+<html>
+<head>
+    <link rel="stylesheet" href="helloStyles.css">
+    <style>
+        .highlight {
+            color: red;
+        }
+    </style>
+    <script>
+        // Function to add a highlight class to clicked links
+        function highlightLink(event) {
+            var target = event.target;
+            var links = document.getElementsByTagName('a');
+            for (var i = 0; i < links.length; i++) {
+                links[i].classList.remove('highlight');
+            }
+            target.classList.add('highlight');
+        }
+        // Attach click event listeners to all links
+        window.addEventListener('load', function() {
+            var links = document.getElementsByTagName('a');
+            for (var i = 0; i < links.length; i++) {
+                links[i].addEventListener('click', highlightLink);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <a href="index.html">home</a>
+    <a href="page1.html">page 1</a>
+    <a href="page2.html">page 2</a>
+    <a href="page3.html">page 3</a>
+    <a href="page4.html">page 4</a>
+    <a href="page5.html">page 5</a>
+
+    <h1>shopping</h1>   
+    <ol>
+        <li>apple</li>
+        <li>bananas</li>
+        <li>cherries</li>
+    </ol>
+</body>
+</html>
